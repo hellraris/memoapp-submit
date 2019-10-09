@@ -4,11 +4,7 @@
 
 ■front-end
 
-라이브러리 설치
-
 1.npm install
-
-ebpack-dev-server 실행
 
 2.npm run dev
 
