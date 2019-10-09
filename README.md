@@ -6,11 +6,11 @@
 
 라이브러리 설치
 
-npm install
+1.npm install
 
 ebpack-dev-server 실행
 
-npm run dev
+2.npm run dev
 
 ■back-end
 
