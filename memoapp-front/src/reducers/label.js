@@ -1,6 +1,6 @@
 export const intialState = {
   labelList: [],
-  selectedLabel: {},
+  selectedLabel: {_id: 'all'},
   updatedLabel: false
 };
 
@@ -65,10 +65,10 @@ export const updateLabelAction = (label) => {
   }
 }
 
-export const getLabelAction = (label) => {
+export const getLabelAction = (id) => {
   return {
     type: GET_LABEL_REQUEST,
-    data: label._id
+    data: id
   }
 };
 
@@ -243,7 +243,7 @@ const reducer = (state = intialState, action) => {
     case RESET_SELECTED_LABEL: {
       return {
         ...state,
-        selectedLabel: {}
+        selectedLabel: { _id: 'all'}
       };
     }
     default: {

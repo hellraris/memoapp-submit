@@ -2,10 +2,8 @@ import React from 'react';
 import { applyMiddleware, compose, createStore } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
-import { persistStore, persistReducer } from 'redux-persist';
-import { PersistGate } from 'redux-persist/integration/react';
-import storage from 'redux-persist/lib/storage';
 import styled from 'styled-components';
+import { Route } from 'react-router-dom';
 
 import reducer from '../reducers';
 import rootSaga from '../sagas/index';
@@ -18,14 +16,29 @@ const Overlay = styled.div`
   display: flex;
   height: calc(100% - 70px);
   margin-top: 10;
+  .label-list-view {
+    flex: 1 1 20%;
+    margin-right: 5px;
+    border: 1px solid #DFDFDF;
+    height: auto;
+    overflow-y: scroll;
+  }
+  .memo-list-view {
+    flex: 1 1 30%;
+    margin: 0 5;
+    border: 1px solid #DFDFDF;
+    height: auto;
+    overflow-y: scroll;
+  }
+  .memo-detail-view {
+    flex: 1 1 45%;
+    margin-left: 5px;
+    border: 1px solid #DFDFDF;
+    height: auto;
+    overflow-y: scroll;
+  }
 `;
 
-const persistConfig = {
-  key: 'root',
-  storage
-};
-
-const enhancedReducer = persistReducer(persistConfig, reducer);
 const sagaMiddleware = createSagaMiddleware();
 const middlewares = [sagaMiddleware];
 const enhancer = process.env.NODE_ENV === 'production'
@@ -34,22 +47,25 @@ const enhancer = process.env.NODE_ENV === 'production'
     applyMiddleware(...middlewares),
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   );
-const store = createStore(enhancedReducer, enhancer);
-const persistor = persistStore(store);
+const store = createStore(reducer, enhancer);
 sagaMiddleware.run(rootSaga);
 
 const Home = () => {
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <AppLayout>
+      <AppLayout>
           <Overlay>
-            <LabelListView />
-            <MemoListView />
-            <MemoDetailView />
+            <div className="label-list-view">
+              <Route className="label-list-view" path="/" component={LabelListView} />
+            </div>
+            <div className="memo-list-view"> 
+            <Route path="/:label" component={MemoListView} />
+            </div>
+            <div className="memo-detail-view">
+            <Route exact path="/:label/:memo" component={MemoDetailView} />
+            </div>
           </Overlay>
-        </AppLayout>
-      </PersistGate>
+      </AppLayout>
     </Provider>
   )
 };

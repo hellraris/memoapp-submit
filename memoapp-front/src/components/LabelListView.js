@@ -1,19 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
 import LabelInputModal from './modals/LabelInputModal';
-import { getLabelListAction, getLabelAction, resetSelectedLabelAction } from '../reducers/label';
-import { getMemoListAction, resetSelectedMemo } from '../reducers/memo';
+import { getLabelListAction } from '../reducers/label';
+import { resetSelectedMemo } from '../reducers/memo';
 
 const Overlay = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 20%;
-  margin-right: 5px;
-  border: 1px solid #DFDFDF;
-  height: auto;
-  overflow-y: scroll;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
 `;
 const LabelItem = styled.div`
   border-bottom: 1px solid #DFDFDF;
@@ -37,11 +34,12 @@ const LabelItem = styled.div`
   }
 `;
 
-const LabelListView = () => {
+const LabelListView = ({match}) => {
   const { labelList, selectedLabel, updatedLabel } = useSelector(state => state.label);
   const { updatedMemo, memoCount } = useSelector(state => state.memo);
   const dispatch = useDispatch();
   
+  // 초기 1회 랜더링 처리
   useEffect(() => {
     dispatch(getLabelListAction);
   }, []);
@@ -54,13 +52,8 @@ const LabelListView = () => {
 
   const [isOpenModal, setModal] = useState(false);
 
-  const onClickLabel = useCallback((label) => {
-    if(label === null) {
-      dispatch(getMemoListAction);
-      dispatch(resetSelectedLabelAction);
-    } else {
-      dispatch(getLabelAction(label));
-    }
+  const onClickLabel = useCallback(() => {
+    // 라벨변경시 선택메모 초기화
     dispatch(resetSelectedMemo);
   }, [selectedLabel]);
 
@@ -74,22 +67,27 @@ const LabelListView = () => {
         { isOpenModal ? 
             <LabelInputModal label={null} close={handleModal} /> 
           : null }
-        <LabelItem
-          style={Object.entries(selectedLabel).length === 0 && selectedLabel.constructor === Object ? 
-            { backgroundColor: '#DFDFDF' } : null
-          }
-          onClick={() => onClickLabel(null)}>
-          전체메모 ({memoCount})
-        </LabelItem>
+        <NavLink to={`/all`}>
+          <LabelItem
+            style={ 
+              selectedLabel._id　=== 'all' ?
+              { backgroundColor: '#DFDFDF' } : null
+            }
+            >
+            전체메모 ({memoCount})
+          </LabelItem>
+        </NavLink>
         {labelList.map((v,i) => {
           return (
-            <LabelItem 
-              style={ v._id === selectedLabel._id ?  { backgroundColor: '#DFDFDF' } : null } 
-              key={i} 
-              onClick={() => onClickLabel(v)} 
-            >
-              {v.title} ({v.memos.length})
-            </LabelItem>
+            <NavLink key={i} to={`/${v._id}`}>
+              <LabelItem
+                className={"label-item"}
+                style={ v._id === selectedLabel._id ?  { backgroundColor: '#DFDFDF' } : null } 
+                onClick={() => onClickLabel()} 
+              >
+                {v.title} ({v.memos.length})
+              </LabelItem>
+            </NavLink>
           )})
         }
       </div>

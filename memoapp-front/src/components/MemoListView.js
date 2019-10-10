@@ -2,18 +2,15 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Moment from 'moment';
-
-import { getMemoListAction, getMemoAction, removeMemosAction } from '../reducers/memo';
-import { removeLabelMemosAction, removeLabelAction } from '../reducers/label';
+import { NavLink } from 'react-router-dom';
+ 
+import { getMemoListAction, getMemoAction, removeMemosAction, resetSelectedMemo } from '../reducers/memo';
+import { removeLabelMemosAction, removeLabelAction, getLabelAction, resetSelectedLabelAction } from '../reducers/label';
 import LabelSettingModal from './modals/LabelSettingModal';
 import LabelInputModal from './modals/LabelInputModal';
 
 const Overlay = styled.div`
-  flex: 1 1 30%;
-  margin: 0 5;
-  border: 1px solid #DFDFDF;
-  height: auto;
-  overflow-y: scroll;
+
 `;
 
 const MemoItem = styled.div`
@@ -32,8 +29,11 @@ const MemoItem = styled.div`
     margin: auto 0;
     width: 10%;
   }
-  .memo-content {
+  NavLink {
     width:90%;
+  }
+  .memo-content {
+    width:100%;
     .memo-content-header {
       display: flex;
       justify-content: space-between;
@@ -85,7 +85,7 @@ const MemoMenu = styled.div`
   }
 `;
 
-const MemoListView = () => {
+const MemoListView = ({ match }) => {
   const dispatch = useDispatch();
   const { selectedLabel } = useSelector(state => state.label);
   const { memoList, updatedMemo, selectedMemo } = useSelector(state => state.memo);
@@ -94,23 +94,17 @@ const MemoListView = () => {
   const [isOpenLabelInputModal, setLabelInputModal] = useState(false);
   const [isLabelMemoList, setLabelMemoMode] = useState(false);
 
-  // 전체메모 리퀘스트 랜더링시 첫 회만 실행
   useEffect(() => {
-    dispatch(getMemoListAction);
-  }, []);
-  
-  // 선택라벨이 바뀔 때 실행
-  useEffect(() => {
-    if (Object.entries(selectedLabel).length === 0
-      && selectedLabel.constructor === Object) {
+    if (match.params.label === 'all') {
+      dispatch(getMemoListAction);
+      dispatch(resetSelectedLabelAction);
       setLabelMemoMode(false);
     } else {
+      dispatch(getLabelAction(match.params.label));
       setLabelMemoMode(true);
     }
-    
-    //체크박스리스트를 초기화
     setCheckedItems([]);
-  }, [selectedLabel]);
+  }, [match.params.label]);
 
   useEffect(() => {
     if ( updatedMemo ) {
@@ -148,10 +142,6 @@ const MemoListView = () => {
   const removeLabelMemos = useCallback(() => {
     dispatch(removeLabelMemosAction({labelId: selectedLabel._id ,memoIds: checkedItems}));
   }, [selectedLabel, checkedItems]);
-
-  const onClickMemo = useCallback((id) => {
-    dispatch(getMemoAction(id));
-  }, []);
 
   return (
     <Overlay>
@@ -195,7 +185,11 @@ const MemoListView = () => {
                     onChange={(e) => onChangeChekedItems(e, v._id)} 
                   />
                   </div>
-                  <div className={"memo-content"} onClick={()=>onClickMemo(v._id)}>
+                  <NavLink 
+                    className={"memo-content"}  
+                    key={i} 
+                    to={ isLabelMemoList ? `/${match.params.label}/${v._id}` : `/all/${v._id}`
+                  }>
                     <div className={"memo-content-header"}>
                       <div className={"memo-title"}>{v.title}</div>
                       <div className={"memo-date"}>{Moment(v.updatedAt).format('YYYY-MM-DD')}</div>
@@ -203,7 +197,7 @@ const MemoListView = () => {
                     <div className={"memo-content-body"}>
                       {v.content}
                     </div>
-                  </div>
+                  </NavLink>
                 </MemoItem>
               )
             }

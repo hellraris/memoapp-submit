@@ -3,15 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Moment from 'moment';
 
-import { removeMemoAction } from '../reducers/memo';
+import { removeMemoAction, getMemoAction } from '../reducers/memo';
 import MemoInputModal from './modals/MemoInputModal';
 
 const Overlay = styled.div`
-  flex: 1 1 45%;
-  margin-left: 5px;
-  border: 1px solid #DFDFDF;
-  height: auto;
-  overflow-y: scroll;
+
 `;
 
 const Header = styled.div`
@@ -52,7 +48,7 @@ const Body = styled.div`
   padding: 20px;
 `;
 
-const MemoDetailView = () => {
+const MemoDetailView = ({match}) => {
   const dispatch = useDispatch();
   const { selectedMemo } = useSelector(state => state.memo);
   const [isOpenModal, setModal] = useState(false);
@@ -64,6 +60,10 @@ const MemoDetailView = () => {
   const removeMemo = useCallback((id) => {
     dispatch(removeMemoAction(id));
   }, []);
+
+  useEffect(() => {
+    dispatch(getMemoAction(match.params.memo));
+  }, [match.params.memo]);
 
   return (
     <Overlay>
