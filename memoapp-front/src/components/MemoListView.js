@@ -10,7 +10,11 @@ import LabelSettingModal from './modals/LabelSettingModal';
 import LabelInputModal from './modals/LabelInputModal';
 
 const Overlay = styled.div`
-
+  a {
+    display: inline-block;
+    text-decoration: none;
+    color: inherit;
+  }
 `;
 
 const MemoItem = styled.div`
@@ -105,13 +109,13 @@ const MemoListView = ({ match }) => {
     dispatch(resetSelectedLabelAction);
     setCheckedItems([]);
   }, [match.params.label]);
-
+  
   useEffect(() => {
     if ( updatedMemo ) {
       dispatch(getMemoListAction);
     }
   }, [updatedMemo]);
-  
+
   const onChangeChekedItems = useCallback((e, _id) => {
     const newCheckedItems = [ ...checkedItems ];
     if (e.target.checked) {
@@ -150,9 +154,9 @@ const MemoListView = ({ match }) => {
         : null }
       {isOpenLabelInputModal ? 
           <LabelInputModal settingTarget={checkedItems} label={selectedLabel} close={handleInputModal} /> 
-        : null }
+        : null }      
       {isLabelMemoList ? 
-          <MemoMenu>
+            <MemoMenu>
               <div className={"label-title"}>{ selectedLabel.title }</div> 
               <div className={"btns"}>
                 <div onClick={handleInputModal}>라벨명변경</div>
@@ -160,8 +164,8 @@ const MemoListView = ({ match }) => {
                 <div onClick={removeLabelMemos}>라벨해제</div>
                 <div onClick={removeLabel}>라벨삭제</div>
               </div>
-           </MemoMenu>
-            :
+            </MemoMenu>
+          :
             <MemoMenu>
               <div className={"label-title"}>전체메모</div> 
               <div className={"btns"}>
@@ -169,8 +173,8 @@ const MemoListView = ({ match }) => {
                 <div onClick={removeMemos}>삭제</div>
               </div>
             </MemoMenu>
-          }
-      { memoList.length !== 0 
+        }
+              { memoList.length !== 0 
           ? memoList.map((v,i) => {
               return (
                 <MemoItem 
@@ -181,7 +185,7 @@ const MemoListView = ({ match }) => {
                     <input 
                     type= "checkbox" 
                     name={v._id} 
-                    checked={checkedItems.find((c) => c === v._id)} 
+                    checked={checkedItems.indexOf(item._id) !== -1} 
                     onChange={(e) => onChangeChekedItems(e, v._id)} 
                   />
                   </div>
@@ -203,7 +207,7 @@ const MemoListView = ({ match }) => {
             }
         ) :
         <div>메모를 작성해주세요</div>
-    }
+        }
     </Overlay>
   );
 };

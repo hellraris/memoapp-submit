@@ -8,9 +8,13 @@ import { getLabelListAction } from '../reducers/label';
 import { resetSelectedMemo, getMemoListAction } from '../reducers/memo';
 
 const Overlay = styled.div`
-      display: flex;
-      flex-direction: column;
-      height: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 `;
 const LabelItem = styled.div`
   border-bottom: 1px solid #DFDFDF;

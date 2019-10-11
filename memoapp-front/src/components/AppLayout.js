@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
+import { Button } from 'antd';
 
 import MemoInputModal from './modals/MemoInputModal';
 
@@ -12,6 +13,7 @@ const MenuBar = styled.div`
   & .btn{
     border: 1px solid #DFDFDF;
     padding: 7px 30px;
+    background-color: white;
     cursor: pointer;
     &:hover{
       background-color: mediumaquamarine;
@@ -34,7 +36,7 @@ const AppLayout = ({ children }) => {
     <div>
       { isOpenModal ? <MemoInputModal memo={null} close={handleModal}/> : null }
       <MenuBar>
-        <div className="btn" onClick={handleModal}>메모작성</div>
+        <button className="btn" onClick={handleModal}>메모작성</button>
       </MenuBar>
       {children}
     </div>
