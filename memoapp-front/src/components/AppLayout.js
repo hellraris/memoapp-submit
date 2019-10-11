@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import { Button } from 'antd';
 
 import MemoInputModal from './modals/MemoInputModal';
 

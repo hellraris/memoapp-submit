@@ -1,6 +1,6 @@
 export const intialState = {
   labelList: [],
-  selectedLabel: {_id: 'all'},
+  selectedLabel: {},
   updatedLabel: false,
   isLoading: false
 };

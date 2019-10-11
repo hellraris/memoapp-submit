@@ -185,7 +185,7 @@ const MemoListView = ({ match }) => {
                     <input 
                     type= "checkbox" 
                     name={v._id} 
-                    checked={checkedItems.indexOf(item._id) !== -1} 
+                    checked={checkedItems.indexOf(v._id) !== -1} 
                     onChange={(e) => onChangeChekedItems(e, v._id)} 
                   />
                   </div>
