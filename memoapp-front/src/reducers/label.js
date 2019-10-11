@@ -1,7 +1,8 @@
 export const intialState = {
   labelList: [],
   selectedLabel: {_id: 'all'},
-  updatedLabel: false
+  updatedLabel: false,
+  isLoading: false
 };
 
 export const GET_LABEL_LIST_REQUEST = 'GET_LABEL_LIST_REQUEST';
@@ -105,23 +106,26 @@ const reducer = (state = intialState, action) => {
     case GET_LABEL_LIST_REQUEST: {
       return {
         ...state,
-        labelList: []
+        isLoading: true
       };
     }
     case GET_LABEL_LIST_SUCCESS: {
       return {
         ...state,
-        labelList: action.data
+        labelList: action.data,
+        isLoading: false
       };
     }
     case GET_LABEL_LIST_FAILURE: {
       return {
-        ...state
+        ...state,
+        isLoading: false
       };
     }
     case GET_LABEL_REQUEST: {
       return {
-        ...state
+        ...state,
+        isLoading: true
       };
     }
     case GET_LABEL_SUCCESS: {
@@ -130,108 +134,128 @@ const reducer = (state = intialState, action) => {
         selectedLabel: {
           _id: action.data._id,
           title: action.data.title
-        }
+        },
+        isLoading: false
       };
     }
     case GET_LABEL_FAILURE: {
       return {
-        ...state
+        ...state,
+        isLoading: false
       };
     }
     case CREATE_LABEL_REQUEST: {
       return {
-        ...state
+        ...state,
+        isLoading: true
       };
     }
     case CREATE_LABEL_SUCCESS: {
       return {
         ...state,
-        selectedLabel: action.data
+        selectedLabel: action.data,
+        isLoading: false
       };
     }
     case CREATE_LABEL_FAILURE: {
       return {
-        ...state
+        ...state,
+        isLoading: false
       };
     }
     case UPDATE_LABEL_REQUEST: {
       return {
-        ...state
+        ...state,
+        isLoading: true
       };
     }
     case UPDATE_LABEL_SUCCESS: {
       return {
         ...state,
-        selectedLabel: action.data
+        selectedLabel: action.data,
+        isLoading: false
       };
     }
     case UPDATE_LABEL_FAILURE: {
       return {
-        ...state
+        ...state,
+        isLoading: false
       };
     }
     case ADD_LABEL_MEMOS_REQUEST: {
       return {
-        ...state
+        ...state,
+        isLoading: true
       };
     }
     case ADD_LABEL_MEMOS_SUCCESS: {
       return {
-        ...state
+        ...state,
+        isLoading: false
       };
     }
     case ADD_LABEL_MEMOS_FAILURE: {
       return {
-        ...state
+        ...state,
+        isLoading: false
       };
     }
     case REMOVE_LABEL_REQUEST: {
       return {
-        ...state
+        ...state,
+        isLoading: true
       };
     }
     case REMOVE_LABEL_SUCCESS: {
       return {
-        ...state
+        ...state,
+        isLoading: false
       };
     }
     case REMOVE_LABEL_FAILURE: {
       return {
-        ...state
+        ...state,
+        isLoading: false
       };
     }
     case REMOVE_LABEL_MEMOS_REQUEST: {
       return {
         ...state,
-        updatedLabel: false
+        updatedLabel: false,
+        isLoading: true
       };
     }
     case REMOVE_LABEL_MEMOS_SUCCESS: {
       return {
         ...state,
-        updatedLabel: true
+        updatedLabel: true,
+        isLoading: false
       };
     }
     case REMOVE_LABEL_MEMOS_FAILURE: {
       return {
-        ...state
+        ...state,
+        isLoading: false
       };
     }
     case REMOVE_ALL_LABEL_MEMOS_REQUEST: {
       return {
         ...state,
-        updatedLabel: false
+        updatedLabel: false,
+        isLoading: true
       };
     }
     case REMOVE_ALL_LABEL_MEMOS_SUCCESS: {
       return {
         ...state,
-        updatedLabel: true
+        updatedLabel: true,
+        isLoading: false
       };
     }
     case REMOVE_ALL_LABEL_MEMOS_FAILURE: {
       return {
-        ...state
+        ...state,
+        isLoading: false
       };
     }
     case RESET_LABEL_LIST: {

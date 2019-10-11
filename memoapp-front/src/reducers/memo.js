@@ -92,100 +92,118 @@ const reducer = (state = intialState, action) => {
     case GET_MEMO_LIST_REQUEST: {
       return {
         ...state,
+        isLoading: true
       };
     }
     case GET_MEMO_LIST_SUCCESS: {
       return {
         ...state,
         memoList: action.data,
-        memoCount: action.data.length
+        memoCount: action.data.length,
+        isLoading: false
       };
     }
     case GET_MEMO_LIST_FAILURE: {
       return {
-        ...state
+        ...state,
+        isLoading: false
       };
     }
     case GET_MEMO_REQUEST: {
       return {
-        ...state
+        ...state,
+        isLoading: true
       };
     }
     case GET_MEMO_SUCCESS: {
       return {
         ...state,
-        selectedMemo: action.data
+        selectedMemo: action.data,
+        isLoading: false
       };
     }
     case GET_MEMO_FAILURE: {
       return {
-        ...state
+        ...state,
+        isLoading: false
       };
     }
     case CREATE_MEMO_REQUEST: {
       return {
-        ...state
+        ...state,
+        isLoading: true
       };
     }
     case CREATE_MEMO_SUCCESS: {
       return {
         ...state,
-        selectedMemo: action.data
+        selectedMemo: action.data,
+        isLoading: false
       };
     }
     case CREATE_MEMO_FAILURE: {
       return {
-        ...state
+        ...state,
+        isLoading: false
       };
     }
     case UPDATE_MEMO_REQUEST: {
       return {
-        ...state
+        ...state,
+        isLoading: true
       };
     }
     case UPDATE_MEMO_SUCCESS: {
       return {
         ...state,
-        selectedMemo: action.data
+        selectedMemo: action.data,
+        isLoading: false
       };
     }
     case UPDATE_MEMO_FAILURE: {
       return {
-        ...state
+        ...state,
+        isLoading: false
       };
     }
     case REMOVE_MEMO_REQUEST: {
       return {
         ...state,
-        updatedMemo: false
+        updatedMemo: false,
+        isLoading: true
       };
     }
     case REMOVE_MEMO_SUCCESS: {
       return {
         ...state,
-        updatedMemo: true
+        updatedMemo: true,
+        isLoading: false
       };
     }
     case REMOVE_MEMO_FAILURE: {
       return {
-        ...state
+        ...state,
+        isLoading: false
       };
     }
     case REMOVE_MEMOS_REQUEST: {
       return {
         ...state,
-        updatedMemo: false
+        updatedMemo: false,
+        isLoading: true
       };
     }
     case REMOVE_MEMOS_SUCCESS: {
       return {
         ...state,
-        updatedMemo: true
+        updatedMemo: true,
+        isLoading: false
       };
     }
     case REMOVE_MEMOS_FAILURE: {
       return {
-        ...state
+        ...state,
+        isLoading: false
       };
     }
     case UPDATE_MEMO_LIST_BY_LABEL: {
