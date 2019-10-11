@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 
 import LabelInputModal from './modals/LabelInputModal';
 import { getLabelListAction } from '../reducers/label';
-import { resetSelectedMemo } from '../reducers/memo';
+import { resetSelectedMemo, getMemoListAction } from '../reducers/memo';
 
 const Overlay = styled.div`
       display: flex;
@@ -34,7 +34,7 @@ const LabelItem = styled.div`
   }
 `;
 
-const LabelListView = ({match}) => {
+const LabelListView = () => {
   const { labelList, selectedLabel, updatedLabel } = useSelector(state => state.label);
   const { updatedMemo, memoCount } = useSelector(state => state.memo);
   const dispatch = useDispatch();
@@ -42,8 +42,9 @@ const LabelListView = ({match}) => {
   // 초기 1회 랜더링 처리
   useEffect(() => {
     dispatch(getLabelListAction);
+    dispatch(getMemoListAction);
   }, []);
-
+  
   useEffect(() => {
     if (updatedLabel || updatedMemo) {
       dispatch(getLabelListAction);
@@ -69,10 +70,8 @@ const LabelListView = ({match}) => {
           : null }
         <NavLink to={`/all`}>
           <LabelItem
-            style={ 
-              selectedLabel._id　=== 'all' ?
-              { backgroundColor: '#DFDFDF' } : null
-            }
+            style={ selectedLabel._id　=== 'all' ? { backgroundColor: '#DFDFDF' } : null }
+            onClick={() => onClickLabel()} 
             >
             전체메모 ({memoCount})
           </LabelItem>

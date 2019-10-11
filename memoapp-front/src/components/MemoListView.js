@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Moment from 'moment';
 import { NavLink } from 'react-router-dom';
  
-import { getMemoListAction, getMemoAction, removeMemosAction, resetSelectedMemo } from '../reducers/memo';
+import { getMemoListAction, removeMemosAction } from '../reducers/memo';
 import { removeLabelMemosAction, removeLabelAction, getLabelAction, resetSelectedLabelAction } from '../reducers/label';
 import LabelSettingModal from './modals/LabelSettingModal';
 import LabelInputModal from './modals/LabelInputModal';
@@ -88,7 +88,7 @@ const MemoMenu = styled.div`
 const MemoListView = ({ match }) => {
   const dispatch = useDispatch();
   const { selectedLabel } = useSelector(state => state.label);
-  const { memoList, updatedMemo, selectedMemo } = useSelector(state => state.memo);
+  const { memoList, selectedMemo, updatedMemo } = useSelector(state => state.memo);
   const [checkedItems, setCheckedItems] = useState([]);
   const [isOpenLabelSettingModal, setLabelSettingModal] = useState(false);
   const [isOpenLabelInputModal, setLabelInputModal] = useState(false);
@@ -97,12 +97,12 @@ const MemoListView = ({ match }) => {
   useEffect(() => {
     if (match.params.label === 'all') {
       dispatch(getMemoListAction);
-      dispatch(resetSelectedLabelAction);
       setLabelMemoMode(false);
     } else {
       dispatch(getLabelAction(match.params.label));
       setLabelMemoMode(true);
     }
+    dispatch(resetSelectedLabelAction);
     setCheckedItems([]);
   }, [match.params.label]);
 
