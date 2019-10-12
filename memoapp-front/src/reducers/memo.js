@@ -3,6 +3,7 @@ export const intialState = {
   memoCount: 0,
   selectedMemo: null,
   isLoading: false,
+  errorMessage:'',
   createdMemoFlg: false,
   updatedMemoFlg: false,
   deletedMemoFlg: false
@@ -39,6 +40,7 @@ export const RESET_DELETED_MEMO_FLG = 'RESET_DELETED_MEMO_FLG';
 export const UPDATE_MEMO_LIST_BY_LABEL = 'UPDATE_MEMO_LIST_BY_LABEL';
 export const RESET_SELECTED_MEMO = 'RESET_SELECTED_MEMO';
 export const RESET_MEMO_LIST = 'RESET_MEMO_LIST';
+export const RESET_MEMO_ERROR_MESSAGE = 'RESET_MEMO_ERROR_MESSAGE';
 
 export const getMemoListAction = {
   type: GET_MEMO_LIST_REQUEST
@@ -90,6 +92,10 @@ export const resetSelectedMemo = {
   type: RESET_SELECTED_MEMO
 };
 
+export const resetMemoErrorMessage = {
+  type: RESET_MEMO_ERROR_MESSAGE
+}
+
 export const resetMemoList = {
   type: RESET_MEMO_LIST
 };
@@ -125,7 +131,8 @@ const reducer = (state = intialState, action) => {
     case GET_MEMO_LIST_FAILURE: {
       return {
         ...state,
-        isLoading: false
+        isLoading: false,
+        errorMessage: '메모리스트 불러오기에 실패하였습니다'
       };
     }
     case GET_MEMO_REQUEST: {
@@ -144,7 +151,8 @@ const reducer = (state = intialState, action) => {
     case GET_MEMO_FAILURE: {
       return {
         ...state,
-        isLoading: false
+        isLoading: false,
+        errorMessage: '메모 불러오기에 실패하였습니다'
       };
     }
     case CREATE_MEMO_REQUEST: {
@@ -164,7 +172,8 @@ const reducer = (state = intialState, action) => {
     case CREATE_MEMO_FAILURE: {
       return {
         ...state,
-        isLoading: false
+        isLoading: false,
+        errorMessage: '메모작성에 실패하였습니다'
       };
     }
     case UPDATE_MEMO_REQUEST: {
@@ -184,7 +193,8 @@ const reducer = (state = intialState, action) => {
     case UPDATE_MEMO_FAILURE: {
       return {
         ...state,
-        isLoading: false
+        isLoading: false,
+        errorMessage: '메모수정에 실패하였습니다'
       };
     }
     case REMOVE_MEMO_REQUEST: {
@@ -203,7 +213,8 @@ const reducer = (state = intialState, action) => {
     case REMOVE_MEMO_FAILURE: {
       return {
         ...state,
-        isLoading: false
+        isLoading: false,
+        errorMessage: '메모삭제에 실패하였습니다'
       };
     }
     case REMOVE_MEMOS_REQUEST: {
@@ -222,7 +233,8 @@ const reducer = (state = intialState, action) => {
     case REMOVE_MEMOS_FAILURE: {
       return {
         ...state,
-        isLoading: false
+        isLoading: false,
+        errorMessage: '일괄 메모삭제에 실패하였습니다'
       };
     }
     case UPDATE_MEMO_LIST_BY_LABEL: {
@@ -242,6 +254,12 @@ const reducer = (state = intialState, action) => {
         ...state,
         memoList: []
       };
+    }
+    case RESET_MEMO_ERROR_MESSAGE: {
+      return {
+        ...state,
+        errorMessage: ''
+      }
     }
     case RESET_CREATED_MEMO_FLG: {
       return {

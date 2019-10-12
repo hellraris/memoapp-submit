@@ -2,6 +2,8 @@ export const intialState = {
   labelList: [],
   selectedLabel: null,
   isLoading: false,
+  errorMessage:'',
+  createdLabelFlg: false,
   updatedLabelFlg: false,
   deletedLabelFlg: false
 };
@@ -40,6 +42,8 @@ export const REMOVE_ALL_LABEL_MEMOS_FAILURE = 'REMOVE_ALL_LABEL_MEMOS_FAILURE';
 
 export const RESET_LABEL_LIST = 'RESET_LABEL_LIST';
 export const RESET_SELECTED_LABEL = 'RESET_SELECTED_LABEL';
+export const RESET_LABEL_ERROR_MESSAGE = 'RESET_LABEL_ERROR_MESSAGE';
+export const RESET_CREATED_LABEL_FLG = 'RESET_CREATED_LABEL_FLG'
 export const RESET_UPDATED_LABEL_FLG = 'RESET_UPDATED_LABEL_FLG';
 export const RESET_DELETED_LABEL_FLG = 'RESET_DELETED_LABEL_FLG';
 
@@ -96,6 +100,10 @@ export const removeAllLabelMemosAction = (memoIds) => {
   }
 };
 
+export const resetCreatedLabelFlg = {
+  type: RESET_CREATED_LABEL_FLG
+};
+
 export const resetUpdatedLabelFlg = {
   type: RESET_UPDATED_LABEL_FLG
 };
@@ -103,6 +111,10 @@ export const resetUpdatedLabelFlg = {
 export const resetDeletedLabelFlg = {
   type: RESET_DELETED_LABEL_FLG
 };
+
+export const resetLabelErrorMessage = {
+  type: RESET_LABEL_ERROR_MESSAGE
+}
 
 export const resetLabelList = {
   type: RESET_LABEL_LIST
@@ -130,7 +142,8 @@ const reducer = (state = intialState, action) => {
     case GET_LABEL_LIST_FAILURE: {
       return {
         ...state,
-        isLoading: false
+        isLoading: false,
+        errorMessage: '라벨리스트 불러오기에 실패하였습니다'
       };
     }
     case GET_LABEL_REQUEST: {
@@ -152,7 +165,8 @@ const reducer = (state = intialState, action) => {
     case GET_LABEL_FAILURE: {
       return {
         ...state,
-        isLoading: false
+        isLoading: false,
+        errorMessage: '라벨 불러오기에 실패하였습니다'
       };
     }
     case CREATE_LABEL_REQUEST: {
@@ -165,13 +179,15 @@ const reducer = (state = intialState, action) => {
       return {
         ...state,
         selectedLabel: action.data,
-        isLoading: false
+        isLoading: false,
+        createdLabelFlg: true
       };
     }
     case CREATE_LABEL_FAILURE: {
       return {
         ...state,
-        isLoading: false
+        isLoading: false,
+        errorMessage: '라벨작성에 실패하였습니다'
       };
     }
     case UPDATE_LABEL_REQUEST: {
@@ -190,7 +206,8 @@ const reducer = (state = intialState, action) => {
     case UPDATE_LABEL_FAILURE: {
       return {
         ...state,
-        isLoading: false
+        isLoading: false,
+        errorMessage: '라벨수정에 실패하였습니다'
       };
     }
     case ADD_LABEL_MEMOS_REQUEST: {
@@ -202,13 +219,15 @@ const reducer = (state = intialState, action) => {
     case ADD_LABEL_MEMOS_SUCCESS: {
       return {
         ...state,
+        updatedLabelFlg: true,
         isLoading: false
       };
     }
     case ADD_LABEL_MEMOS_FAILURE: {
       return {
         ...state,
-        isLoading: false
+        isLoading: false,
+        errorMessage: '라벨지정에 실패하였습니다'
       };
     }
     case REMOVE_LABEL_REQUEST: {
@@ -227,7 +246,8 @@ const reducer = (state = intialState, action) => {
     case REMOVE_LABEL_FAILURE: {
       return {
         ...state,
-        isLoading: false
+        isLoading: false,
+        errorMessage: '라벨삭제에 실패하였습니다'
       };
     }
     case REMOVE_LABEL_MEMOS_REQUEST: {
@@ -246,7 +266,8 @@ const reducer = (state = intialState, action) => {
     case REMOVE_LABEL_MEMOS_FAILURE: {
       return {
         ...state,
-        isLoading: false
+        isLoading: false,
+        errorMessage: '라벨메모삭제에 실패하였습니다'
       };
     }
     case REMOVE_ALL_LABEL_MEMOS_REQUEST: {
@@ -265,7 +286,8 @@ const reducer = (state = intialState, action) => {
     case REMOVE_ALL_LABEL_MEMOS_FAILURE: {
       return {
         ...state,
-        isLoading: false
+        isLoading: false,
+        errorMessage: '라벨메모 일괄삭제에 실패하였습니다'
       };
     }
     case RESET_LABEL_LIST: {
@@ -278,6 +300,18 @@ const reducer = (state = intialState, action) => {
       return {
         ...state,
         selectedLabel: { _id: 'all'}
+      };
+    }
+    case RESET_LABEL_ERROR_MESSAGE: {
+      return {
+        ...state,
+        errorMessage: ''
+      }
+    }
+    case RESET_CREATED_LABEL_FLG: {
+      return {
+        ...state,
+        createdLabelFlg: false
       };
     }
     case RESET_UPDATED_LABEL_FLG: {
