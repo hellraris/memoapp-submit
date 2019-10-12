@@ -107,7 +107,7 @@ const MemoInputModal = ({ memo, close }) => {
     } else {
       dispatch(createMemoAction({title, content}));
     }
-      return close();
+    return close();
   }, [title, content]);
 
   useEffect(() => {

@@ -117,9 +117,6 @@ function* updateMemo(action) {
       type: UPDATE_MEMO_SUCCESS,
       data: result.data
     });
-    yield put({
-      type: GET_MEMO_LIST_REQUEST
-    });
   } catch (error) {
     yield put({
       type: UPDATE_MEMO_FAILURE,

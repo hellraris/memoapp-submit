@@ -1,8 +1,9 @@
 export const intialState = {
   labelList: [],
-  selectedLabel: {},
-  updatedLabel: false,
-  isLoading: false
+  selectedLabel: null,
+  isLoading: false,
+  updatedLabelFlg: false,
+  deletedLabelFlg: false
 };
 
 export const GET_LABEL_LIST_REQUEST = 'GET_LABEL_LIST_REQUEST';
@@ -39,17 +40,11 @@ export const REMOVE_ALL_LABEL_MEMOS_FAILURE = 'REMOVE_ALL_LABEL_MEMOS_FAILURE';
 
 export const RESET_LABEL_LIST = 'RESET_LABEL_LIST';
 export const RESET_SELECTED_LABEL = 'RESET_SELECTED_LABEL';
+export const RESET_UPDATED_LABEL_FLG = 'RESET_UPDATED_LABEL_FLG';
+export const RESET_DELETED_LABEL_FLG = 'RESET_DELETED_LABEL_FLG';
 
 export const getLabelListAction = {
   type: GET_LABEL_LIST_REQUEST
-}
-
-export const resetLabelListAction = {
-  type: RESET_LABEL_LIST
-}
-
-export const resetSelectedLabelAction = {
-  type: RESET_SELECTED_LABEL
 }
 
 export const createLabelAction = (title) => {
@@ -100,6 +95,22 @@ export const removeAllLabelMemosAction = (memoIds) => {
     data: memoIds
   }
 };
+
+export const resetUpdatedLabelFlg = {
+  type: RESET_UPDATED_LABEL_FLG
+};
+
+export const resetDeletedLabelFlg = {
+  type: RESET_DELETED_LABEL_FLG
+};
+
+export const resetLabelList = {
+  type: RESET_LABEL_LIST
+}
+
+export const resetSelectedLabel = {
+  type: RESET_SELECTED_LABEL
+}
 
 const reducer = (state = intialState, action) => {
   switch (action.type) {
@@ -209,6 +220,7 @@ const reducer = (state = intialState, action) => {
     case REMOVE_LABEL_SUCCESS: {
       return {
         ...state,
+        deletedLabelFlg: true,
         isLoading: false
       };
     }
@@ -221,14 +233,13 @@ const reducer = (state = intialState, action) => {
     case REMOVE_LABEL_MEMOS_REQUEST: {
       return {
         ...state,
-        updatedLabel: false,
         isLoading: true
       };
     }
     case REMOVE_LABEL_MEMOS_SUCCESS: {
       return {
         ...state,
-        updatedLabel: true,
+        updatedLabelFlg: true,
         isLoading: false
       };
     }
@@ -241,14 +252,13 @@ const reducer = (state = intialState, action) => {
     case REMOVE_ALL_LABEL_MEMOS_REQUEST: {
       return {
         ...state,
-        updatedLabel: false,
         isLoading: true
       };
     }
     case REMOVE_ALL_LABEL_MEMOS_SUCCESS: {
       return {
         ...state,
-        updatedLabel: true,
+        updatedLabelFlg: true,
         isLoading: false
       };
     }
@@ -268,6 +278,18 @@ const reducer = (state = intialState, action) => {
       return {
         ...state,
         selectedLabel: { _id: 'all'}
+      };
+    }
+    case RESET_UPDATED_LABEL_FLG: {
+      return {
+        ...state,
+        updatedLabelFlg: false
+      };
+    }
+    case RESET_DELETED_LABEL_FLG: {
+      return {
+        ...state,
+        deletedLabelFlg: false
       };
     }
     default: {

@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Moment from 'moment';
 
-import { removeMemoAction, getMemoAction } from '../reducers/memo';
+import { getMemoListAction, removeMemoAction, getMemoAction, resetUpdatedMemoFlg } from '../reducers/memo';
+import { getLabelAction } from '../reducers/label';
 import MemoInputModal from './modals/MemoInputModal';
 
 const Overlay = styled.div`
@@ -50,8 +51,20 @@ const Body = styled.div`
 
 const MemoDetailView = ({match}) => {
   const dispatch = useDispatch();
-  const { selectedMemo } = useSelector(state => state.memo);
+  const { selectedMemo, updatedMemoFlg } = useSelector(state => state.memo);
   const [isOpenModal, setModal] = useState(false);
+
+  // 메모 수정시 메모리스트 갱신
+  useEffect(() => {
+    if (updatedMemoFlg) {
+      if (match.params.label === 'all') {
+        dispatch(getMemoListAction);
+      } else {
+        dispatch(getLabelAction(match.params.label));
+      }
+      dispatch(resetUpdatedMemoFlg);
+    }
+  }, [updatedMemoFlg]);
 
   const handleModal = useCallback(() => {
     setModal(!isOpenModal);
@@ -70,8 +83,7 @@ const MemoDetailView = ({match}) => {
       { isOpenModal ? 
           <MemoInputModal memo={selectedMemo} close={handleModal} /> 
         : null }
-      { Object.entries(selectedMemo).length !== 0 
-        || selectedMemo.constructor !== Object ? 
+      { selectedMemo !== null ? 
       <div>
         <Header>
           <label className={'title'}>{ selectedMemo.title }</label>

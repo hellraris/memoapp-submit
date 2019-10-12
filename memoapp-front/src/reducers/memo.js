@@ -1,8 +1,11 @@
 export const intialState = {
   memoList: [],
   memoCount: 0,
-  selectedMemo:{},
-  updatedMemo: false
+  selectedMemo: null,
+  isLoading: false,
+  createdMemoFlg: false,
+  updatedMemoFlg: false,
+  deletedMemoFlg: false
 };
 
 export const GET_MEMO_LIST_REQUEST = 'GET_MEMO_LIST_REQUEST';
@@ -28,6 +31,10 @@ export const REMOVE_MEMO_FAILURE = 'REMOVE_MEMO_FAILURE';
 export const REMOVE_MEMOS_REQUEST = 'REMOVE_MEMOS_REQUEST';
 export const REMOVE_MEMOS_SUCCESS = 'REMOVE_MEMOS_SUCCESS';
 export const REMOVE_MEMOS_FAILURE = 'REMOVE_MEMOS_FAILURE';
+
+export const RESET_CREATED_MEMO_FLG = 'RESET_CREATED_MEMO_FLG';
+export const RESET_UPDATED_MEMO_FLG = 'RESET_UPDATED_MEMO_FLG';
+export const RESET_DELETED_MEMO_FLG = 'RESET_DELETED_MEMO_FLG';
 
 export const UPDATE_MEMO_LIST_BY_LABEL = 'UPDATE_MEMO_LIST_BY_LABEL';
 export const RESET_SELECTED_MEMO = 'RESET_SELECTED_MEMO';
@@ -77,15 +84,27 @@ export const updateMemoListByLabel = (memos) => {
     type: UPDATE_MEMO_LIST_BY_LABEL,
     data: memos
   });
-}
+};
 
 export const resetSelectedMemo = {
   type: RESET_SELECTED_MEMO
-}
+};
 
 export const resetMemoList = {
   type: RESET_MEMO_LIST
-}
+};
+
+export const resetCreatedMemoFlg = {
+  type: RESET_CREATED_MEMO_FLG
+};
+
+export const resetUpdatedMemoFlg = {
+  type: RESET_UPDATED_MEMO_FLG
+};
+
+export const resetDeletedMemoFlg = {
+  type: RESET_DELETED_MEMO_FLG
+};
 
 const reducer = (state = intialState, action) => {
   switch (action.type) {
@@ -138,6 +157,7 @@ const reducer = (state = intialState, action) => {
       return {
         ...state,
         selectedMemo: action.data,
+        createdMemoFlg: true,
         isLoading: false
       };
     }
@@ -157,6 +177,7 @@ const reducer = (state = intialState, action) => {
       return {
         ...state,
         selectedMemo: action.data,
+        updatedMemoFlg: true,
         isLoading: false
       };
     }
@@ -169,14 +190,13 @@ const reducer = (state = intialState, action) => {
     case REMOVE_MEMO_REQUEST: {
       return {
         ...state,
-        updatedMemo: false,
         isLoading: true
       };
     }
     case REMOVE_MEMO_SUCCESS: {
       return {
         ...state,
-        updatedMemo: true,
+        deletedMemoFlg: true,
         isLoading: false
       };
     }
@@ -189,14 +209,13 @@ const reducer = (state = intialState, action) => {
     case REMOVE_MEMOS_REQUEST: {
       return {
         ...state,
-        updatedMemo: false,
         isLoading: true
       };
     }
     case REMOVE_MEMOS_SUCCESS: {
       return {
         ...state,
-        updatedMemo: true,
+        deletedMemoFlg: true,
         isLoading: false
       };
     }
@@ -223,6 +242,24 @@ const reducer = (state = intialState, action) => {
         ...state,
         memoList: []
       };
+    }
+    case RESET_CREATED_MEMO_FLG: {
+      return {
+        ...state,
+        createdMemoFlg: false
+      }
+    }
+    case RESET_UPDATED_MEMO_FLG: {
+      return {
+        ...state,
+        updatedMemoFlg: false
+      }
+    }
+    case RESET_DELETED_MEMO_FLG: {
+      return {
+        ...state,
+        deletedMemoFlg: false
+      }
     }
     default: {
       return {

@@ -4,8 +4,15 @@ import styled from 'styled-components';
 import Moment from 'moment';
 import { NavLink } from 'react-router-dom';
  
-import { getMemoListAction, removeMemosAction } from '../reducers/memo';
-import { removeLabelMemosAction, removeLabelAction, getLabelAction, resetSelectedLabelAction } from '../reducers/label';
+import { getMemoListAction, removeMemosAction, resetDeletedMemoFlg } from '../reducers/memo';
+import { getLabelListAction, 
+         removeLabelMemosAction, 
+         removeLabelAction, 
+         getLabelAction, 
+         resetSelectedLabel,
+         resetUpdatedLabelFlg
+        }
+from '../reducers/label';
 import LabelSettingModal from './modals/LabelSettingModal';
 import LabelInputModal from './modals/LabelInputModal';
 
@@ -14,6 +21,22 @@ const Overlay = styled.div`
     display: inline-block;
     text-decoration: none;
     color: inherit;
+  }
+  button {
+    width: 20%;
+        margin: 1%;
+        padding: 7px 0;
+        border-radius: 5px;
+        background-color: white;
+        font-size: 12pt;
+        border: 1px solid #bebebe;
+        cursor: pointer;
+        &:hover{
+          background-color: mediumaquamarine;
+        };
+        &:active{
+          background-color: gainsboro;
+     }
   }
 `;
 
@@ -32,9 +55,6 @@ const MemoItem = styled.div`
   .memo-selection {
     margin: auto 0;
     width: 10%;
-  }
-  NavLink {
-    width:90%;
   }
   .memo-content {
     width:100%;
@@ -70,8 +90,9 @@ const MemoMenu = styled.div`
     text-overflow:ellipsis;
     white-space:nowrap;
   }
-  .btns {
+  .label-btns {
     margin-top: 10px;
+    width: 100%;
     display: flex;
     div{
       margin: 0 5;
@@ -89,15 +110,16 @@ const MemoMenu = styled.div`
   }
 `;
 
-const MemoListView = ({ match }) => {
+const MemoListView = ({ match, history }) => {
   const dispatch = useDispatch();
-  const { selectedLabel } = useSelector(state => state.label);
-  const { memoList, selectedMemo, updatedMemo } = useSelector(state => state.memo);
+  const { selectedLabel, updatedLabelFlg } = useSelector(state => state.label);
+  const { memoList, selectedMemo, deletedMemoFlg } = useSelector(state => state.memo);
   const [checkedItems, setCheckedItems] = useState([]);
   const [isOpenLabelSettingModal, setLabelSettingModal] = useState(false);
   const [isOpenLabelInputModal, setLabelInputModal] = useState(false);
   const [isLabelMemoList, setLabelMemoMode] = useState(false);
 
+   // 메모리스트뷰 초기화 
   useEffect(() => {
     if (match.params.label === 'all') {
       dispatch(getMemoListAction);
@@ -106,15 +128,27 @@ const MemoListView = ({ match }) => {
       dispatch(getLabelAction(match.params.label));
       setLabelMemoMode(true);
     }
-    dispatch(resetSelectedLabelAction);
+    dispatch(resetSelectedLabel);
     setCheckedItems([]);
   }, [match.params.label]);
-  
+
+  // 라벨업데이트시 라벨리스트 갱신
   useEffect(() => {
-    if ( updatedMemo ) {
-      dispatch(getMemoListAction);
+    if (updatedLabelFlg) {
+      dispatch(getLabelListAction);
+      dispatch(getLabelAction(match.params.label));
+      dispatch(resetUpdatedLabelFlg);
     }
-  }, [updatedMemo]);
+  }, [updatedLabelFlg]);
+
+  // 메모삭제시 전체메모 갱신
+  useEffect(() => {
+    if (deletedMemoFlg) {
+      history.push(`/${match.params.label}`);
+      dispatch(getMemoListAction);
+      dispatch(resetDeletedMemoFlg);
+    }
+  }, [deletedMemoFlg]);
 
   const onChangeChekedItems = useCallback((e, _id) => {
     const newCheckedItems = [ ...checkedItems ];
@@ -141,10 +175,12 @@ const MemoListView = ({ match }) => {
 
   const removeMemos = useCallback(() => {
     dispatch(removeMemosAction(checkedItems));
-  }, [selectedLabel, checkedItems]);
+    setCheckedItems([]);
+  }, [checkedItems]);
 
   const removeLabelMemos = useCallback(() => {
     dispatch(removeLabelMemosAction({labelId: selectedLabel._id ,memoIds: checkedItems}));
+    setCheckedItems([]);
   }, [selectedLabel, checkedItems]);
 
   return (
@@ -158,27 +194,28 @@ const MemoListView = ({ match }) => {
       {isLabelMemoList ? 
             <MemoMenu>
               <div className={"label-title"}>{ selectedLabel.title }</div> 
-              <div className={"btns"}>
-                <div onClick={handleInputModal}>라벨명변경</div>
-                <div onClick={handleSettingModal}>라벨설정</div>
-                <div onClick={removeLabelMemos}>라벨해제</div>
-                <div onClick={removeLabel}>라벨삭제</div>
+              <div className={"label-btns"}>
+                <button onClick={handleInputModal}>라벨명변경</button>
+                <button onClick={removeLabel}>라벨삭제</button>
+                <button onClick={handleSettingModal}>라벨설정</button>
+                <button onClick={removeLabelMemos}>라벨해제</button>
               </div>
             </MemoMenu>
           :
             <MemoMenu>
-              <div className={"label-title"}>전체메모</div> 
-              <div className={"btns"}>
-                <div onClick={handleSettingModal}>라벨설정</div>
-                <div onClick={removeMemos}>삭제</div>
+              <div className={"label-title"}>전체메모</div>
+              <div className={"label-btns"}>
+                <button disabled={ memoList.length === 0 || checkedItems.length === 0} onClick={handleSettingModal}>라벨설정</button>
+                <button disabled={ memoList.length === 0 || checkedItems.length === 0} onClick={removeMemos}>삭제</button>
               </div>
             </MemoMenu>
         }
-              { memoList.length !== 0 
-          ? memoList.map((v,i) => {
+          { memoList.length !== 0 
+            ? memoList.map((v,i) => {
               return (
                 <MemoItem 
-                  style={ v._id === selectedMemo._id ?  { backgroundColor: '#DFDFDF' } : null } 
+                  style={ v._id === (selectedMemo !== null ? selectedMemo._id : null ) 
+                          ?  { backgroundColor: '#DFDFDF' } : null } 
                   key={i}
                 >
                   <div className={"memo-selection"}>

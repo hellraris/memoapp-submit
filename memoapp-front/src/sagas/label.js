@@ -202,10 +202,6 @@ function* removeLabelMemos(action) {
       type: REMOVE_LABEL_MEMOS_SUCCESS,
       data: result.data
     });
-    yield put({
-      type: GET_LABEL_REQUEST,
-      data: result.data._id
-    });
   } catch (error) {
     yield put({
       type: REMOVE_LABEL_MEMOS_FAILURE,
