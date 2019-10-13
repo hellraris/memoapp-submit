@@ -21,7 +21,6 @@ const Overlay = styled.div`
     margin-right: 5px;
     border: 1px solid #DFDFDF;
     height: auto;
-    overflow-y: scroll;
   }
   .memo-list-view {
     flex: 1 1 30%;
@@ -45,7 +44,8 @@ const enhancer = process.env.NODE_ENV === 'production'
   ? compose(applyMiddleware(...middlewares))
   : compose(
     applyMiddleware(...middlewares),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__ 
+      && window.__REDUX_DEVTOOLS_EXTENSION__() : f => f
   );
 const store = createStore(reducer, enhancer);
 sagaMiddleware.run(rootSaga);
@@ -56,13 +56,13 @@ const Home = () => {
       <AppLayout>
           <Overlay>
             <div className="label-list-view">
-              <Route className="label-list-view" path="/" component={LabelListView} />
+              <Route path="/" component={LabelListView} />
             </div>
             <div className="memo-list-view"> 
-            <Route path="/:label" component={MemoListView} />
+            < Route path="/:label" component={MemoListView} />
             </div>
             <div className="memo-detail-view">
-            <Route exact path="/:label/:memo" component={MemoDetailView} />
+              <Route exact path="/:label/:memo" component={MemoDetailView} />
             </div>
           </Overlay>
       </AppLayout>

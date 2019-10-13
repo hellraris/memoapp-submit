@@ -61,5 +61,14 @@ router.delete('/', function(req, res, next) {
     });
 });
 
+/* GET /memos/count/:id(all) */
+router.get('/count/:id', function(req, res, next) {
+  Memo
+    .count()
+    .exec(function (err, payload) {
+      if (err) return next(err);
+      res.json(payload);
+    });
+});
 
 module.exports = router;

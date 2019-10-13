@@ -102,6 +102,7 @@ const MemoInputModal = ({ memo, close }) => {
 
   const onSubmit = useCallback((e) => {
     e.preventDefault();
+
     if (isEditMode) {
       dispatch(updateMemoAction({id: memo._id, title: title, content: content}));
     } else {
@@ -128,7 +129,8 @@ const MemoInputModal = ({ memo, close }) => {
         <div className="body">
           <div className="memo-title">
             <fieldset>
-              <input type="text" name="memo-title" placeholder="제목을 입력해주세요" value={title} onChange={onChangeTitle} />
+              <input type="text" name="memo-title" placeholder="제목을 입력해주세요" 
+                required value={title} onChange={onChangeTitle} />
             </fieldset>
           </div>
           <div className="memo-content">

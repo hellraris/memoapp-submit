@@ -1,7 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import {  useDispatch, useSelector } from 'react-redux';
 
 import MemoInputModal from './modals/MemoInputModal';
+import { resetLabelErrorMessage } from '../reducers/label';
+import { resetMemoErrorMessage } from '../reducers/memo';
 
 const MenuBar = styled.div`
   display: flex;
@@ -9,21 +12,25 @@ const MenuBar = styled.div`
   padding: 7px;
   height: 40px;
   align-items: center;
-  & .btn{
+  button {
     border: 1px solid #DFDFDF;
     padding: 7px 30px;
     background-color: white;
+    font-size: 16px;
     cursor: pointer;
     &:hover{
-      background-color: mediumaquamarine;
+      color: #1890ff;
     }
-    &:active{
-      background-color: gainsboro;
+    &:active {
+      background-color: #e6f7ff;
     }
   };
 `;
 
 const AppLayout = ({ children }) => {
+  const { memoErrorMessage } = useSelector(state => state.memo);
+  const { labelErrorMessage } = useSelector(state => state.label);
+  const dispatch = useDispatch();
 
   const [isOpenModal, setModal] = useState(false);
 
@@ -31,11 +38,25 @@ const AppLayout = ({ children }) => {
     setModal(!isOpenModal);
   }, [isOpenModal]);
 
+  useEffect(()=> {
+    if (memoErrorMessage !== '') {
+      alert(memoErrorMessage);
+      dispatch(resetMemoErrorMessage);
+    }
+  },[memoErrorMessage])
+
+  useEffect(()=> {
+    if (labelErrorMessage !== '') {
+      alert(labelErrorMessage);
+      dispatch(resetLabelErrorMessage);
+    }
+  },[labelErrorMessage])
+
   return (
     <div>
       { isOpenModal ? <MemoInputModal memo={null} close={handleModal}/> : null }
       <MenuBar>
-        <button className="btn" onClick={handleModal}>메모작성</button>
+        <button onClick={handleModal}>메모작성</button>
       </MenuBar>
       {children}
     </div>

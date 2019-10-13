@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { createLabelAction, updateLabelAction } from '../../reducers/label';
@@ -77,12 +77,15 @@ const LabelInputModal = ({ label, close }) => {
   const [isEditMode, setEditMode] = useState(false);
   const [title, setTitle] = useState('');
 
+  const { labelList } = useSelector(state => state.label);
+
   const onChangeTitle = (e) => {
     setTitle(e.target.value);
   }
 
   const onSubmit = useCallback((e) => {
     e.preventDefault();
+
     if (isEditMode) {
       dispatch(updateLabelAction({ id: label._id, title: title }));
     } else {
@@ -107,7 +110,8 @@ const LabelInputModal = ({ label, close }) => {
         <label>{isEditMode ? "라벨명변경" : "라벨추가"}</label>
         <div className="body">
           <fieldset>
-            <input type="text" name="label-title" placeholder="라벨명을 적어주세요" value={title} onChange={onChangeTitle} />
+            <input type="text" name="label-title" required placeholder="라벨명을 적어주세요" 
+              value={title} onChange={onChangeTitle} />
           </fieldset>
         </div>
         <div className="button-wrap">

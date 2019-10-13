@@ -5,6 +5,9 @@ import {
   GET_MEMO_LIST_REQUEST,
   GET_MEMO_LIST_SUCCESS,
   GET_MEMO_LIST_FAILURE,
+  GET_MEMO_COUNT_REQUEST,
+  GET_MEMO_COUNT_SUCCESS,
+  GET_MEMO_COUNT_FAILURE,
   GET_MEMO_REQUEST,
   GET_MEMO_SUCCESS,
   GET_MEMO_FAILURE,
@@ -50,6 +53,29 @@ function* getMemoList() {
 
 function* watchGetMemoList() {
   yield takeLatest(GET_MEMO_LIST_REQUEST, getMemoList);
+};
+
+function getMemoCountApi() {
+  return axios.get('/memos/count/all');
+};
+
+function* getMemoCount() {
+  try {
+    const result = yield call(getMemoCountApi);
+    yield put({
+      type: GET_MEMO_COUNT_SUCCESS,
+      data: result.data
+    });
+  } catch (error) {
+    yield put({
+      type: GET_MEMO_COUNT_FAILURE,
+      error: error
+    });
+  }
+};
+
+function* watchGetMemoCount() {
+  yield takeLatest(GET_MEMO_COUNT_REQUEST, getMemoCount);
 };
 
 function getMemoApi(id) {
@@ -195,6 +221,7 @@ export default function* memoSaga() {
     fork(watchGetMemo),
     fork(watchRemoveMemo),
     fork(watchRemoveMemos),
-    fork(watchUpdateMemo)
+    fork(watchUpdateMemo),
+    fork(watchGetMemoCount)
   ]);
 };

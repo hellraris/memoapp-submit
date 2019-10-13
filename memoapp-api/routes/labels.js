@@ -84,7 +84,7 @@ router.delete('/:id/memos', function(req, res, next) {
     });
 });
 
-/* DELETE /memos/:id(null) */
+/* DELETE /memos/:id(all) */
 router.delete('/memos/:id', function(req, res, next) {
   var memoIds = req.body.memoIds || [];
   Label

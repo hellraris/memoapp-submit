@@ -27,7 +27,6 @@ import {
   REMOVE_ALL_LABEL_MEMOS_SUCCESS,
   REMOVE_ALL_LABEL_MEMOS_FAILURE,
 } from '../reducers/label'
-
 import { UPDATE_MEMO_LIST_BY_LABEL } from '../reducers/memo'
 
 function getLabelListApi() {
@@ -215,7 +214,7 @@ function* watchRemoveLabelMemos() {
 };
 
 function removeAllLabelMemosApi(memoIds) {
-  return axios.delete(`/labels/memos/${null}`, { data:{ _id: null, memoIds: memoIds } });
+  return axios.delete(`/labels/memos/all`, { data:{ _id: null, memoIds: memoIds } });
 };
 
 function* removeAllLabelMemos(action) {

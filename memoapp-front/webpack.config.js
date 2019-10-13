@@ -15,7 +15,10 @@ module.exports = {
     extensions: ['.js']
   },
   entry: {
-    app: ['./src/index']
+    app: [
+            '@babel/polyfill',
+            './src/index.js'
+    ]
   },
   module: {
     rules:[{
@@ -24,10 +27,11 @@ module.exports = {
       options: {
         presets: [
           ['@babel/preset-env', {
+          useBuiltIns: 'entry',
           targets: {
-            browsers: ['> 2%']
+            browsers: ['> 2%', 'ie >= 11']
           },
-          debug: false
+          debug: true
           }],
           '@babel/preset-react'
         ],

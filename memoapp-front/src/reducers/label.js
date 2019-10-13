@@ -2,44 +2,53 @@ export const intialState = {
   labelList: [],
   selectedLabel: null,
   isLoading: false,
-  errorMessage:'',
+  labelErrorMessage:'',
   createdLabelFlg: false,
   updatedLabelFlg: false,
   deletedLabelFlg: false
 };
 
+// 라벨리스트 불러오기 액션
 export const GET_LABEL_LIST_REQUEST = 'GET_LABEL_LIST_REQUEST';
 export const GET_LABEL_LIST_SUCCESS = 'GET_LABEL_LIST_SUCCESS';
 export const GET_LABEL_LIST_FAILURE = 'GET_LABEL_LIST_FAILURE';
 
+// 라벨 불러오기 액션
 export const GET_LABEL_REQUEST = 'GET_LABEL_REQUEST';
 export const GET_LABEL_SUCCESS = 'GET_LABEL_SUCCESS';
 export const GET_LABEL_FAILURE = 'GET_LABEL_FAILURE';
 
+// 라벨작성 액션
 export const CREATE_LABEL_REQUEST = 'CREATE_LABEL_REQUEST';
 export const CREATE_LABEL_SUCCESS = 'CREATE_LABEL_SUCCESS';
 export const CREATE_LABEL_FAILURE = 'CREATE_LABEL_FAILURE';
 
+// 라벨수정 액션
 export const UPDATE_LABEL_REQUEST = 'UPDATE_LABEL_REQUEST';
 export const UPDATE_LABEL_SUCCESS = 'UPDATE_LABEL_SUCCESS';
 export const UPDATE_LABEL_FAILURE = 'UPDATE_LABEL_FAILURE';
 
+// 라벨지정 액션
 export const ADD_LABEL_MEMOS_REQUEST = 'ADD_LABEL_MEMOS_REQUEST';
 export const ADD_LABEL_MEMOS_SUCCESS = 'ADD_LABEL_MEMOS_SUCCESS';
 export const ADD_LABEL_MEMOS_FAILURE = 'ADD_LABEL_MEMOS_FAILURE';
 
+// 라벨삭제 액션
 export const REMOVE_LABEL_REQUEST = 'REMOVE_LABEL_REQUEST';
 export const REMOVE_LABEL_SUCCESS = 'REMOVE_LABEL_SUCCESS';
 export const REMOVE_LABEL_FAILURE = 'REMOVE_LABEL_FAILURE';
 
+// 라벨지정취소 액션
 export const REMOVE_LABEL_MEMOS_REQUEST = 'REMOVE_LABEL_MEMOS_REQUEST';
 export const REMOVE_LABEL_MEMOS_SUCCESS = 'REMOVE_LABEL_MEMOS_SUCCESS';
 export const REMOVE_LABEL_MEMOS_FAILURE = 'REMOVE_LABEL_MEMOS_FAILURE';
 
+// 라벨일괄지정취소 액션
 export const REMOVE_ALL_LABEL_MEMOS_REQUEST = 'REMOVE_ALL_LABEL_MEMOS_REQUEST';
 export const REMOVE_ALL_LABEL_MEMOS_SUCCESS = 'REMOVE_ALL_LABEL_MEMOS_SUCCESS';
 export const REMOVE_ALL_LABEL_MEMOS_FAILURE = 'REMOVE_ALL_LABEL_MEMOS_FAILURE';
 
+// 각종 초기화 액션
 export const RESET_LABEL_LIST = 'RESET_LABEL_LIST';
 export const RESET_SELECTED_LABEL = 'RESET_SELECTED_LABEL';
 export const RESET_LABEL_ERROR_MESSAGE = 'RESET_LABEL_ERROR_MESSAGE';
@@ -49,7 +58,7 @@ export const RESET_DELETED_LABEL_FLG = 'RESET_DELETED_LABEL_FLG';
 
 export const getLabelListAction = {
   type: GET_LABEL_LIST_REQUEST
-}
+};
 
 export const createLabelAction = (title) => {
   return {
@@ -63,7 +72,7 @@ export const updateLabelAction = (label) => {
     type: UPDATE_LABEL_REQUEST,
     data: label
   }
-}
+};
 
 export const getLabelAction = (id) => {
   return {
@@ -114,15 +123,15 @@ export const resetDeletedLabelFlg = {
 
 export const resetLabelErrorMessage = {
   type: RESET_LABEL_ERROR_MESSAGE
-}
+};
 
 export const resetLabelList = {
   type: RESET_LABEL_LIST
-}
+};
 
 export const resetSelectedLabel = {
   type: RESET_SELECTED_LABEL
-}
+};
 
 const reducer = (state = intialState, action) => {
   switch (action.type) {
@@ -143,7 +152,7 @@ const reducer = (state = intialState, action) => {
       return {
         ...state,
         isLoading: false,
-        errorMessage: '라벨리스트 불러오기에 실패하였습니다'
+        labelErrorMessage: '라벨리스트 불러오기에 실패하였습니다'
       };
     }
     case GET_LABEL_REQUEST: {
@@ -166,7 +175,7 @@ const reducer = (state = intialState, action) => {
       return {
         ...state,
         isLoading: false,
-        errorMessage: '라벨 불러오기에 실패하였습니다'
+        labelErrorMessage: '라벨 불러오기에 실패하였습니다'
       };
     }
     case CREATE_LABEL_REQUEST: {
@@ -187,7 +196,7 @@ const reducer = (state = intialState, action) => {
       return {
         ...state,
         isLoading: false,
-        errorMessage: '라벨작성에 실패하였습니다'
+        labelErrorMessage: '라벨작성에 실패하였습니다'
       };
     }
     case UPDATE_LABEL_REQUEST: {
@@ -207,7 +216,7 @@ const reducer = (state = intialState, action) => {
       return {
         ...state,
         isLoading: false,
-        errorMessage: '라벨수정에 실패하였습니다'
+        labelErrorMessage: '라벨수정에 실패하였습니다'
       };
     }
     case ADD_LABEL_MEMOS_REQUEST: {
@@ -227,7 +236,7 @@ const reducer = (state = intialState, action) => {
       return {
         ...state,
         isLoading: false,
-        errorMessage: '라벨지정에 실패하였습니다'
+        labelErrorMessage: '라벨지정에 실패하였습니다'
       };
     }
     case REMOVE_LABEL_REQUEST: {
@@ -247,7 +256,7 @@ const reducer = (state = intialState, action) => {
       return {
         ...state,
         isLoading: false,
-        errorMessage: '라벨삭제에 실패하였습니다'
+        labelErrorMessage: '라벨삭제에 실패하였습니다'
       };
     }
     case REMOVE_LABEL_MEMOS_REQUEST: {
@@ -267,7 +276,7 @@ const reducer = (state = intialState, action) => {
       return {
         ...state,
         isLoading: false,
-        errorMessage: '라벨메모삭제에 실패하였습니다'
+        labelErrorMessage: '라벨지정취소에 실패하였습니다'
       };
     }
     case REMOVE_ALL_LABEL_MEMOS_REQUEST: {
@@ -287,7 +296,7 @@ const reducer = (state = intialState, action) => {
       return {
         ...state,
         isLoading: false,
-        errorMessage: '라벨메모 일괄삭제에 실패하였습니다'
+        labelErrorMessage: '라벨일괄지정취소에 실패하였습니다'
       };
     }
     case RESET_LABEL_LIST: {
@@ -305,8 +314,8 @@ const reducer = (state = intialState, action) => {
     case RESET_LABEL_ERROR_MESSAGE: {
       return {
         ...state,
-        errorMessage: ''
-      }
+        labelErrorMessage: ''
+      };
     }
     case RESET_CREATED_LABEL_FLG: {
       return {
