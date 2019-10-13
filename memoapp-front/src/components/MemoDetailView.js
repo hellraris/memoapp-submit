@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Moment from 'moment';
 
-import { getMemoListAction, removeMemoAction, getMemoAction, resetUpdatedMemoFlg } from '../reducers/memo';
+import { getMemoListAction, removeMemoAction,
+   getMemoAction, resetUpdatedMemoFlg } from '../reducers/memo';
 import { getLabelAction } from '../reducers/label';
 
 import MemoInputModal from './modals/MemoInputModal';

@@ -2,7 +2,6 @@ export const intialState = {
   memoList: [],
   memoCount: 0,
   selectedMemo: null,
-  isLoading: false,
   memoErrorMessage: '',
   createdMemoFlg: false,
   updatedMemoFlg: false,
@@ -44,7 +43,7 @@ export const REMOVE_MEMOS_REQUEST = 'REMOVE_MEMOS_REQUEST';
 export const REMOVE_MEMOS_SUCCESS = 'REMOVE_MEMOS_SUCCESS';
 export const REMOVE_MEMOS_FAILURE = 'REMOVE_MEMOS_FAILURE';
 
-// 불러오기한 라벨을 통해 메모리스트를 업데이트하는 액션
+// 불러오기한 라벨데이터에 포함된 메모목록을 가지고 메모목록 뷰를 업데이트하는 액션
 export const UPDATE_MEMO_LIST_BY_LABEL = 'UPDATE_MEMO_LIST_BY_LABEL';
 
 // 각종 초기화 액션
@@ -133,144 +132,123 @@ const reducer = (state = intialState, action) => {
   switch (action.type) {
     case GET_MEMO_LIST_REQUEST: {
       return {
-        ...state,
-        isLoading: true
+        ...state
       };
     }
     case GET_MEMO_LIST_SUCCESS: {
       return {
         ...state,
         memoList: action.data,
-        memoCount: action.data.length,
-        isLoading: false
+        memoCount: action.data.length
       };
     }
     case GET_MEMO_LIST_FAILURE: {
       return {
         ...state,
-        isLoading: false,
         memoErrorMessage: '메모리스트 불러오기에 실패하였습니다'
       };
     }
     case GET_MEMO_COUNT_REQUEST: {
       return {
-        ...state,
-        isLoading: true
+        ...state
       };
     }
     case GET_MEMO_COUNT_SUCCESS: {
       return {
         ...state,
-        memoCount: action.data,
-        isLoading: false
+        memoCount: action.data
       };
     }
     case GET_MEMO_COUNT_FAILURE: {
       return {
         ...state,
-        isLoading: false,
         memoErrorMessage: '메모카운트에 실패하였습니다'
       };
     }
     case GET_MEMO_REQUEST: {
       return {
-        ...state,
-        isLoading: true
+        ...state
       };
     }
     case GET_MEMO_SUCCESS: {
       return {
         ...state,
-        selectedMemo: action.data,
-        isLoading: false
+        selectedMemo: action.data
       };
     }
     case GET_MEMO_FAILURE: {
       return {
         ...state,
-        isLoading: false,
         memoErrorMessage: '메모 불러오기에 실패하였습니다'
       };
     }
     case CREATE_MEMO_REQUEST: {
       return {
-        ...state,
-        isLoading: true
+        ...state
       };
     }
     case CREATE_MEMO_SUCCESS: {
       return {
         ...state,
         selectedMemo: action.data,
-        createdMemoFlg: true,
-        isLoading: false
+        createdMemoFlg: true
       };
     }
     case CREATE_MEMO_FAILURE: {
       return {
         ...state,
-        isLoading: false,
         memoErrorMessage: '메모작성에 실패하였습니다'
       };
     }
     case UPDATE_MEMO_REQUEST: {
       return {
-        ...state,
-        isLoading: true
+        ...state
       };
     }
     case UPDATE_MEMO_SUCCESS: {
       return {
         ...state,
         selectedMemo: action.data,
-        updatedMemoFlg: true,
-        isLoading: false
+        updatedMemoFlg: true
       };
     }
     case UPDATE_MEMO_FAILURE: {
       return {
         ...state,
-        isLoading: false,
         memoErrorMessage: '메모수정에 실패하였습니다'
       };
     }
     case REMOVE_MEMO_REQUEST: {
       return {
-        ...state,
-        isLoading: true
+        ...state
       };
     }
     case REMOVE_MEMO_SUCCESS: {
       return {
         ...state,
-        deletedMemoFlg: true,
-        isLoading: false
+        deletedMemoFlg: true
       };
     }
     case REMOVE_MEMO_FAILURE: {
       return {
         ...state,
-        isLoading: false,
         memoErrorMessage: '메모삭제에 실패하였습니다'
       };
     }
     case REMOVE_MEMOS_REQUEST: {
       return {
-        ...state,
-        isLoading: true
+        ...state
       };
     }
     case REMOVE_MEMOS_SUCCESS: {
       return {
         ...state,
-        deletedMemoFlg: true,
-        isLoading: false
+        deletedMemoFlg: true
       };
     }
     case REMOVE_MEMOS_FAILURE: {
       return {
         ...state,
-        isLoading: false,
         memoErrorMessage: '일괄 메모삭제에 실패하였습니다'
       };
     }

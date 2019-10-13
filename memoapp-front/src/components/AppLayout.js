@@ -38,6 +38,7 @@ const AppLayout = ({ children }) => {
     setModal(!isOpenModal);
   }, [isOpenModal]);
 
+  // 메모 관련 에러 메세지가 업데이트 될 시 그 내용을 팝업메세지로 출력
   useEffect(()=> {
     if (memoErrorMessage !== '') {
       alert(memoErrorMessage);
@@ -45,6 +46,7 @@ const AppLayout = ({ children }) => {
     }
   },[memoErrorMessage])
 
+  // 라벨 관련 에러 메세지가 업데이트 될 시 그 내용을 팝업메세지로 출력
   useEffect(()=> {
     if (labelErrorMessage !== '') {
       alert(labelErrorMessage);

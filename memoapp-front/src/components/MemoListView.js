@@ -111,6 +111,7 @@ const MemoListView = ({ match, history }) => {
 
    // 메모리스트뷰 초기화 
   useEffect(() => {
+    // URL의 파라미터를 판별해 전체메모 목록 혹은 라벨메모 목록을 렌더링 
     if (match.params.label === 'all') {
       dispatch(getMemoListAction);
       setLabelMemoMode(false);
@@ -184,16 +185,17 @@ const MemoListView = ({ match, history }) => {
     setOpenConfirmDialog(false);
   });
 
+  // 오픈할 다이어로그를 판별
   const handleDialog = ((target) => {
     let newMsg = "";
     if (target === 'memos') {
       newMsg = checkedItems.length + "개의 메모를 삭제하시겠습니까?";
       setConfirmDialog({msg: newMsg, confirm: confirmRemoveMemos});
     } else if (target === 'labelMemos') {
-      newMsg = checkedItems.length + "개의 메모를 라벨에서 지정취소하시겠습니까";
+      newMsg = checkedItems.length + "개의 메모를 라벨에서 지정취소하시겠습니까?";
       setConfirmDialog({msg: newMsg, confirm: confirmRemoveLabelMemos});
     } else if (target === 'label') {
-      newMsg = "라벨을 삭제하시겠습니까";
+      newMsg = "라벨을 삭제하시겠습니까?";
       setConfirmDialog({msg: newMsg, confirm: confirmRemoveLabel});     
     }
     setOpenConfirmDialog(true);

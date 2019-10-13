@@ -1,7 +1,6 @@
 export const intialState = {
   labelList: [],
   selectedLabel: null,
-  isLoading: false,
   labelErrorMessage:'',
   createdLabelFlg: false,
   updatedLabelFlg: false,
@@ -137,28 +136,24 @@ const reducer = (state = intialState, action) => {
   switch (action.type) {
     case GET_LABEL_LIST_REQUEST: {
       return {
-        ...state,
-        isLoading: true
+        ...state
       };
     }
     case GET_LABEL_LIST_SUCCESS: {
       return {
         ...state,
-        labelList: action.data,
-        isLoading: false
+        labelList: action.data
       };
     }
     case GET_LABEL_LIST_FAILURE: {
       return {
         ...state,
-        isLoading: false,
         labelErrorMessage: '라벨리스트 불러오기에 실패하였습니다'
       };
     }
     case GET_LABEL_REQUEST: {
       return {
-        ...state,
-        isLoading: true
+        ...state
       };
     }
     case GET_LABEL_SUCCESS: {
@@ -167,135 +162,115 @@ const reducer = (state = intialState, action) => {
         selectedLabel: {
           _id: action.data._id,
           title: action.data.title
-        },
-        isLoading: false
+        }
       };
     }
     case GET_LABEL_FAILURE: {
       return {
         ...state,
-        isLoading: false,
         labelErrorMessage: '라벨 불러오기에 실패하였습니다'
       };
     }
     case CREATE_LABEL_REQUEST: {
       return {
-        ...state,
-        isLoading: true
+        ...state
       };
     }
     case CREATE_LABEL_SUCCESS: {
       return {
         ...state,
         selectedLabel: action.data,
-        isLoading: false,
         createdLabelFlg: true
       };
     }
     case CREATE_LABEL_FAILURE: {
       return {
         ...state,
-        isLoading: false,
         labelErrorMessage: '라벨작성에 실패하였습니다'
       };
     }
     case UPDATE_LABEL_REQUEST: {
       return {
-        ...state,
-        isLoading: true
+        ...state
       };
     }
     case UPDATE_LABEL_SUCCESS: {
       return {
         ...state,
-        selectedLabel: action.data,
-        isLoading: false
+        selectedLabel: action.data
       };
     }
     case UPDATE_LABEL_FAILURE: {
       return {
         ...state,
-        isLoading: false,
         labelErrorMessage: '라벨수정에 실패하였습니다'
       };
     }
     case ADD_LABEL_MEMOS_REQUEST: {
       return {
-        ...state,
-        isLoading: true
+        ...state
       };
     }
     case ADD_LABEL_MEMOS_SUCCESS: {
       return {
         ...state,
-        updatedLabelFlg: true,
-        isLoading: false
+        updatedLabelFlg: true
       };
     }
     case ADD_LABEL_MEMOS_FAILURE: {
       return {
         ...state,
-        isLoading: false,
         labelErrorMessage: '라벨지정에 실패하였습니다'
       };
     }
     case REMOVE_LABEL_REQUEST: {
       return {
-        ...state,
-        isLoading: true
+        ...state
       };
     }
     case REMOVE_LABEL_SUCCESS: {
       return {
         ...state,
-        deletedLabelFlg: true,
-        isLoading: false
+        deletedLabelFlg: true
       };
     }
     case REMOVE_LABEL_FAILURE: {
       return {
         ...state,
-        isLoading: false,
         labelErrorMessage: '라벨삭제에 실패하였습니다'
       };
     }
     case REMOVE_LABEL_MEMOS_REQUEST: {
       return {
-        ...state,
-        isLoading: true
+        ...state
       };
     }
     case REMOVE_LABEL_MEMOS_SUCCESS: {
       return {
         ...state,
-        updatedLabelFlg: true,
-        isLoading: false
+        updatedLabelFlg: true
       };
     }
     case REMOVE_LABEL_MEMOS_FAILURE: {
       return {
         ...state,
-        isLoading: false,
         labelErrorMessage: '라벨지정취소에 실패하였습니다'
       };
     }
     case REMOVE_ALL_LABEL_MEMOS_REQUEST: {
       return {
-        ...state,
-        isLoading: true
+        ...state
       };
     }
     case REMOVE_ALL_LABEL_MEMOS_SUCCESS: {
       return {
         ...state,
-        updatedLabelFlg: true,
-        isLoading: false
+        updatedLabelFlg: true
       };
     }
     case REMOVE_ALL_LABEL_MEMOS_FAILURE: {
       return {
         ...state,
-        isLoading: false,
         labelErrorMessage: '라벨일괄지정취소에 실패하였습니다'
       };
     }

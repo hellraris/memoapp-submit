@@ -6,10 +6,9 @@ module.exports = {
   mode: 'development',
   devtool: 'eval',
   devServer: {
-    inline:true,
-    hot: true,
     contentBase: path.join(__dirname, 'public'),
-    publicPath: '/assets/js'
+    publicPath: '/assets/js',
+    port: 5000
   },
   resolve: {
     extensions: ['.js']
@@ -27,11 +26,10 @@ module.exports = {
       options: {
         presets: [
           ['@babel/preset-env', {
-          useBuiltIns: 'entry',
           targets: {
-            browsers: ['> 2%', 'ie >= 11']
+            browsers: ['> 2%']
           },
-          debug: true
+          debug: false
           }],
           '@babel/preset-react'
         ],
